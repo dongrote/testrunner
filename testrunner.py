@@ -65,9 +65,9 @@ def main():
         if isTestModule(name,obj):
             results = runTestsFromModuleWithName(obj,name)
             for result in results:
-                if result.failures > 0:
+                if len(result.failures) > 0:
                     exit_val = -1
-                if result.errors > 0:
+                if len(result.errors) > 0:
                     exit_val = -1
     cov.stop()
     cov.save()
