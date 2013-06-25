@@ -81,4 +81,6 @@ def main():
     sys.exit(exit_val)
 
 if '__main__' == __name__:
+    import os
+    sys.path.append(os.getcwd())
     main()
