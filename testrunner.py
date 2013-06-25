@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from coverage import coverage
+from optparse import OptionParser
 import unittest
 import inspect
 import sys
@@ -50,6 +51,15 @@ def runTestsFromModuleWithName(mod,name):
 
 def main():
     global threshold
+    parser = OptionParser()
+    parser.set_usage("Usage: %prog [options]")
+    parser.add_option('-t','--threshold', dest='threshold', default=90,
+        help='Set code coverage threshold [0-100]')
+    (options,args) = parser.parse_args()
+    threshold = float(int(options.threshold))
+    if not 0. <= threshold <= 100.:
+        print >> sys.stderr, 'Threshold %f outside of range [0.0-100.0]' % threshold
+        sys.exit(-10)
     exit_val = 0
     cov = coverage(cover_pylib=False,omit=['/usr*','tests*',sys.modules[__name__].__file__])
     cov.start()
@@ -69,6 +79,8 @@ def main():
     if ccov < threshold:
         print >> sys.stderr, 'Code coverage threshold not met: %d%% < %d%%' % (int(ccov+0.5),int(threshold))
         exit_val = -2
+    else:
+        print >> sys.stderr, 'Code coverage: %d%%; threshold set at %d%%' % (int(ccov+0.5),int(threshold))
     sys.exit(exit_val)
 
 if '__main__' == __name__:
