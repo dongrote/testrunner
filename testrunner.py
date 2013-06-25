@@ -40,10 +40,10 @@ def runTestsFromModuleWithName(mod,name):
     testSuites = GetTestSuitesFromModule(mod)
     testCases = GetTestCasesFromModule(mod)
     for suite in testSuites:
-        print 'Running tests in "%s.%s"' % (name,suite.__name__)
+        print >> sys.stderr, 'Running tests in "%s.%s"' % (name,suite.__name__)
         results.append(testRunner.run(suite()))
     for case in testCases:
-        print 'Running tests in "%s.%s"' % (name,case.__name__)
+        print >> sys.stderr, 'Running tests in "%s.%s"' % (name,case.__name__)
         results.append(testRunner.run(unittest.loader.makeSuite(case)))
     return results
 
