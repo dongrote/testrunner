@@ -5,8 +5,6 @@ import unittest
 import inspect
 import sys
 
-threshold = 99.
-
 def isTestModule(name,obj):
     if inspect.ismodule(obj):
         return name.startswith('test_')
@@ -50,7 +48,6 @@ def runTestsFromModuleWithName(mod,name):
     return results
 
 def main():
-    global threshold
     parser = OptionParser()
     parser.set_usage("Usage: %prog [options]")
     parser.add_option('-t','--threshold', dest='threshold', default=90,
