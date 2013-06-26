@@ -1,9 +1,15 @@
 #!/usr/bin/env python
-from coverage import coverage
 from optparse import OptionParser
 import unittest
 import inspect
 import sys
+
+try:
+    from coverage import coverage
+except ImportError:
+    print >> sys.stderr, 'testrunner relies on the coverage module.'
+    print >> sys.stderr, '    sudo easy_install coverage'
+    sys.exit(-1)
 
 def isTestModule(name,obj):
     if inspect.ismodule(obj):
@@ -60,7 +66,11 @@ def main():
     exit_val = 0
     cov = coverage(cover_pylib=False,omit=['/usr*','tests*',sys.modules[__name__].__file__])
     cov.start()
-    import tests
+    try:
+        import tests
+    except ImportError:
+        print >> sys.stderr, 'No tests package in current path: aborting.'
+        sys.exit(-1)
     for name, obj in inspect.getmembers(tests):
         if isTestModule(name,obj):
             results = runTestsFromModuleWithName(obj,name)
